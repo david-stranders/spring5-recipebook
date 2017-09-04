@@ -1,5 +1,6 @@
 package nl.davidstranders.spring5recipebook.bootstrap;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.davidstranders.spring5recipebook.model.*;
 import nl.davidstranders.spring5recipebook.repositories.CategoryRepository;
 import nl.davidstranders.spring5recipebook.repositories.RecipeRepository;
@@ -16,6 +17,7 @@ import java.util.Optional;
 /**
  * Created by Dell on 4-9-2017.
  */
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -32,6 +34,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         recipeRepository.saveAll(getRecipes());
+        log.debug("loading bootstrap data");
     }
 
     private List<Recipe> getRecipes() {

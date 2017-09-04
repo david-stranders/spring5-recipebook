@@ -1,5 +1,6 @@
 package nl.davidstranders.spring5recipebook.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.davidstranders.spring5recipebook.model.Category;
 import nl.davidstranders.spring5recipebook.model.UnitOfMeasure;
 import nl.davidstranders.spring5recipebook.repositories.CategoryRepository;
@@ -14,6 +15,7 @@ import java.util.Optional;
 /**
  * Created by Dell on 1-9-2017.
  */
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -25,6 +27,7 @@ public class IndexController {
 
     @RequestMapping({"", "/", "/index"})
     public String getIndexPage(Model model){
+        log.debug("getting index page");
 
         model.addAttribute("recipes", recipeService.getRecipes());
 
