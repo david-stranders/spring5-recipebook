@@ -9,6 +9,7 @@ import java.util.Set;
  * Created by Dell on 3-9-2017.
  */
 @Data
+@EqualsAndHashCode(exclude = {"recipes"})
 @Entity
 public class Category {
 
