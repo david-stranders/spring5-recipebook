@@ -25,7 +25,7 @@ public class IngredientController {
         this.recipeService = recipeService;
         this.unitOfMeasureService = unitOfMeasureService;
     }
-    
+
     @GetMapping("/recipe/{recipeId}/ingredients")
     public String listIngredients(@PathVariable String recipeId, Model model){
         log.debug("Getting ingredient list for recipe id: " + recipeId);
