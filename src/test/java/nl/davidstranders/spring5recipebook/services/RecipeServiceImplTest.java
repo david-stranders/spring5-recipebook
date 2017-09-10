@@ -1,7 +1,9 @@
 package nl.davidstranders.spring5recipebook.services;
 
+import nl.davidstranders.spring5recipebook.commands.RecipeCommand;
 import nl.davidstranders.spring5recipebook.converters.RecipeCommandToRecipe;
 import nl.davidstranders.spring5recipebook.converters.RecipeToRecipeCommand;
+import nl.davidstranders.spring5recipebook.exceptions.NotFoundException;
 import nl.davidstranders.spring5recipebook.model.Recipe;
 import nl.davidstranders.spring5recipebook.repositories.RecipeRepository;
 import org.junit.Before;
@@ -55,6 +57,38 @@ public class RecipeServiceImplTest {
         verify(recipeRepository, never()).findAll();
     }
 
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdTestNotFound() throws Exception {
+
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipeReturned = recipeService.findById(1L);
+
+        //should throw a NotFoundException
+    }
+
+    @Test
+    public void getRecipeCommandByIdTest() throws Exception {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeToRecipeCommand.convert(any())).thenReturn(recipeCommand);
+
+        RecipeCommand commandById = recipeService.findCommandById(1L);
+
+        assertNotNull("Null recipe returned", commandById);
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
+    }
+
     @Test
     public void getRecipesTest() throws Exception {
 
@@ -85,5 +119,4 @@ public class RecipeServiceImplTest {
         //then
         verify(recipeRepository, times(1)).deleteById(anyLong());
     }
-
 }
